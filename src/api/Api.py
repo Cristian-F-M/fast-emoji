@@ -14,7 +14,7 @@ class API:
         self._fast_emoji = fast_emoji
 
     def log(self, *args: Any):
-        print(args)
+        print(*args)
 
     def get_emojis(self, offset: int, limit: int):
         entries = list(emoji.EMOJI_DATA.items())
