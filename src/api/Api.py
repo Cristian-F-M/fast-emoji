@@ -21,12 +21,18 @@ class API:
         return entries[offset : offset + limit]
 
     def print_emoji(self, emoji: str):
-        self._fast_emoji.hide_window()
-        self._fast_emoji.search_query = ""
-        self._fast_emoji.raw_search_query = ""
-        controller.type("\b" * len(self._fast_emoji.raw_search_query))
-        controller.type(emoji)
+        if not emoji:
+            self._fast_emoji.focused_emoji = None
+            return
+        self._fast_emoji.focused_emoji = emoji
+        self._fast_emoji.print_emoji()
 
     def handle_input(self, value: str):
         self._fast_emoji.search_query = value
         self._fast_emoji.raw_search_query = f":{value}"
+
+    def set_focused_emoji(self, emoji: str):
+        if not emoji:
+            self._fast_emoji.focused_emoji = None
+            return
+        self._fast_emoji.focused_emoji = emoji
