@@ -1,5 +1,6 @@
 from typing import Any
 from src.data import vk_from_string, string_from_vk
+import win32api
 
 
 def is_some_key_in(
@@ -21,3 +22,16 @@ def get_string_from_vk_code(vk_code: int):
 
 def vk_is(vk_code: int, string: str):
     return string_from_vk[vk_code] == string
+
+
+def is_key_pressed(code: int | str):
+    vk_code: int | None = None
+    if type(code) is str and code in vk_from_string:
+        vk_code = vk_from_string[code]
+    elif type(code) is int:
+        vk_code = code
+
+    if vk_code is None:
+        return False
+
+    return win32api.GetKeyState(vk_code) < 0
