@@ -18,9 +18,7 @@ KeyCode = keyboard.KeyCode
 kb_controller = keyboard.Controller()
 
 
-
 # TODO -> Add paste support
-# url = "https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json"
 
 
 class FastEmoji:
@@ -154,7 +152,7 @@ class FastEmoji:
             hidden=True,
             focus=False,
             easy_drag=False,
-            zoomable=False
+            zoomable=False,
         )
 
         if not window:
