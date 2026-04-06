@@ -17,3 +17,7 @@ def get_string_from_vk_code(vk_code: int):
     if vk_code not in string_from_vk:
         return None
     return string_from_vk[vk_code]
+
+
+def vk_is(vk_code: int, string: str):
+    return string_from_vk[vk_code] == string
