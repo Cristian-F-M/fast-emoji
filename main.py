@@ -199,19 +199,22 @@ class FastEmoji:
             self.print_emoji()
             self.listener.suppress_event()  # type: ignore
 
-        # esc or tab or space
+        # esc or tab
         if vk_is(vk_code, "VK_ESCAPE") or vk_is(vk_code, "VK_TAB"):
             self.hide_window()
             self.listener.suppress_event()  # type: ignore
 
+        # space
         if vk_is(vk_code, "VK_SPACE"):
             self.hide_window()
 
+        # shift + backspace
         if is_key_pressed("VK_SHIFT") and vk_is(vk_code, "VK_BACK"):
             self.search_query = ""
             self.raw_search_query = ":"
             self.update_ui()
 
+        # not ctrl - backspace
         if (
             not is_key_pressed("VK_CONTROL")
             and vk_is(vk_code, "VK_BACK")
@@ -224,6 +227,7 @@ class FastEmoji:
             if len(self.raw_search_query) == 0:
                 self.hide_window()
 
+        # any char [A-Z]
         if is_char and is_key_down and self.must_record:
             char = chr(data.vkCode).lower()
             self.raw_search_query += char
