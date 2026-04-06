@@ -1,1 +1,59 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@theme {
+	--color-background: var(--background);
+	--color-surface: var(--surface);
+	--color-surface-soft: var(--surface-soft);
+	--color-border: var(--border);
+	--color-primary: var(--primary);
+	--color-primary-pressed: var(--primary-pressed);
+	--color-text-primary: var(--text-primary);
+	--color-text-secondary: var(--text-secondary);
+	--color-text-muted: var(--text-muted);
+	--color-success: var(--success);
+	--color-warning: var(--warning);
+	--color-danger: var(--danger);
+	--color-overlay: var(--overlay);
+}
+
+:root {
+	--background: rgb(242, 246, 252);
+	--surface: rgb(255, 255, 255);
+	--surface-soft: rgb(225, 232, 240);
+	--border: rgb(200, 214, 238);
+	--primary: rgb(59, 130, 246);
+	--primary-pressed: rgb(37, 99, 235);
+	--text-primary: rgb(12, 18, 35);
+	--text-secondary: rgb(55, 72, 98);
+	--text-muted: rgb(110, 120, 135);
+	--success: rgb(21, 128, 61);
+	--warning: rgb(202, 138, 4);
+	--danger: rgb(185, 28, 28);
+	--overlay: rgb(0, 0, 0);
+
+	color: var(--text-primary);
+}
+
+:root[data-theme="dark"] {
+	--background: rgb(10, 12, 28);
+	--surface: rgb(22, 26, 40);
+	--surface-soft: rgb(30, 36, 56);
+	--border: rgb(48, 56, 98);
+	--primary: rgb(99, 102, 241);
+	--primary-pressed: rgb(79, 70, 229);
+	--text-primary: rgb(242, 245, 255);
+	--text-secondary: rgb(190, 200, 255);
+	--text-muted: rgb(145, 150, 190);
+	--success: rgb(46, 213, 115);
+	--warning: rgb(255, 176, 32);
+	--danger: rgb(255, 95, 95);
+	--overlay: rgb(0, 0, 0);
+}
+
+body {
+	@apply overflow-hidden;
+}
+
+* {
+	@apply transition-all;
+}
