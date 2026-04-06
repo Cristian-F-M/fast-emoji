@@ -6,7 +6,7 @@ from pynput import keyboard
 controller = keyboard.Controller()
 
 if TYPE_CHECKING:
-    from wv import FastEmoji
+    from main import FastEmoji
 
 
 class API:
