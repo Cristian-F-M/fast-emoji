@@ -1,42 +1,37 @@
 import { IconSearch } from '@tabler/icons-react'
-import {
-	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState
-} from 'react'
+import EMOJIS from 'emojilib'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import useDebounce from '@/hooks/useDebounce'
-import type { GetEmojisReturnType } from '@/types/emoji'
 
 function App() {
 	const [thereIsPywebview, setThereIsPywebview] = useState(false)
 	const [query, setQuery] = useState('')
-	const [emojis, setEmojis] = useState<GetEmojisReturnType>([])
 	const [focusedEmoji, setFocusedEmoji] = useState<number>(0)
 	const debouncedQuery = useDebounce(query, 300)
 	const [limit, setLimit] = useState(100)
-	const maxIndex = emojis.length - 1
-	const minIndex = 0
 	const alreadyLoad = useRef(false)
 	const loadingMoreMessageRef = useRef(null)
+	const emojisEntries = useMemo(() => Object.entries(EMOJIS), [])
+
+	const emojis = useMemo(() => {
+		if (debouncedQuery) {
+			return emojisEntries.filter(([_, tags]) =>
+				tags.some((tag) => tag.includes(debouncedQuery))
+			)
+		}
+		const l = Math.min(limit, emojisEntries.length)
+		alreadyLoad.current = false
+		return emojisEntries.slice(0, l)
+	}, [limit, debouncedQuery, emojisEntries])
+
+	const maxIndex = emojis.length - 1
+	const minIndex = 0
 
 	const onPywebviewReady = useCallback(() => {
 		setThereIsPywebview(true)
 		window.pywebview.api.log('pywebview is ready')
 	}, [])
-
-	const loadEmojies = useCallback(async () => {
-		if (!thereIsPywebview) return
-		const emojis = await window.pywebview.api.get_emojis(
-			0,
-			limit,
-			debouncedQuery
-		)
-		setEmojis(emojis)
-		alreadyLoad.current = false
-	}, [debouncedQuery, limit, thereIsPywebview])
 
 	const handleEmojiClick = useCallback((emoji: string) => {
 		window.pywebview.api.print_emoji(emoji)
@@ -81,11 +76,6 @@ function App() {
 
 		return Math.floor(($iconsList.clientWidth + columnGap) / width)
 	}, [getItemSize])
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: It's intentional to force load emojis when debouncedQuery changes
-	useLayoutEffect(() => {
-		loadEmojies()
-	}, [loadEmojies, debouncedQuery, thereIsPywebview])
 
 	useEffect(() => {
 		window.addEventListener('pywebviewready', onPywebviewReady)
@@ -228,17 +218,18 @@ function App() {
 						</button>
 					))}
 				</section>
-
-				<span
-					ref={loadingMoreMessageRef}
-					id="loading-more-message"
-					className={twMerge(
-						'block text-text-muted text-center text-sm mt-2 opacity-0 size-0',
-						emojis.length > 0 && !debouncedQuery && 'opacity-100 size-auto'
-					)}
-				>
-					Loading more...
-				</span>
+				{emojisEntries.length > emojis.length && (
+					<span
+						ref={loadingMoreMessageRef}
+						id="loading-more-message"
+						className={twMerge(
+							'block text-text-muted text-center text-sm mt-2 opacity-0 size-0',
+							emojis.length > 0 && !debouncedQuery && 'opacity-100 size-auto'
+						)}
+					>
+						Loading more...
+					</span>
+				)}
 			</main>
 		</section>
 	)
