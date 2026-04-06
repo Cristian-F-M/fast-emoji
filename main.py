@@ -200,13 +200,12 @@ class FastEmoji:
             self.listener.suppress_event()  # type: ignore
 
         # esc or tab or space
-        if (
-            vk_is(vk_code, "VK_ESCAPE")
-            or vk_is(vk_code, "VK_TAB")
-            or vk_is(vk_code, "VK_SPACE")
-        ):
+        if vk_is(vk_code, "VK_ESCAPE") or vk_is(vk_code, "VK_TAB"):
             self.hide_window()
             self.listener.suppress_event()  # type: ignore
+
+        if vk_is(vk_code, "VK_SPACE"):
+            self.hide_window()
 
         if is_key_pressed("VK_SHIFT") and vk_is(vk_code, "VK_BACK"):
             self.search_query = ""
