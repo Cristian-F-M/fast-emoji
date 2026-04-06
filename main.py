@@ -216,7 +216,11 @@ class FastEmoji:
             self.raw_search_query = ":"
             self.update_ui()
 
-        if vk_is(vk_code, "VK_BACK") and is_key_down:
+        if (
+            not is_some_key_in(self.keys_pressed, True, *CTRL_KEYS)
+            and vk_is(vk_code, "VK_BACK")
+            and is_key_down
+        ):
             self.search_query = self.search_query[:-1]
             self.raw_search_query = self.raw_search_query[:-1]
             self.update_ui()
