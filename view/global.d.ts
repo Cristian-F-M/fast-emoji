@@ -1,12 +1,9 @@
-import type { GetEmojisReturnType } from '@/types/emoji'
-
 declare global {
 	interface Window {
 		pywebview: {
 			api: {
 				log: (...args: unknown[]) => Promise<void>
 				hide_window: () => Promise<void>
-				get_emojis(offset: number, limit: number, query: string): Promise<GetEmojisReturnType>
 				print_emoji(emoji: string): Promise<void>
 				handle_input(value: string): Promise<void>
 				set_focused_emoji(emoji: string): Promise<void>
@@ -20,3 +17,5 @@ declare global {
 		on_hide: () => void
 	}
 }
+
+export {}
