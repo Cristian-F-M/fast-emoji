@@ -35,7 +35,7 @@ class FastEmoji:
         self.raw_search_query: str = ""
         self.api: API = API(self)
         self.keys_pressed: set[int] = set()
-        self.text_selected = 1
+        self.must_record = False
 
         self.title = "Fast Emoji"
         self.width = 360
@@ -68,6 +68,7 @@ class FastEmoji:
         self.is_showed = False
         self.search_query = ""
         self.raw_search_query = ""
+        self.must_record = False
         self.window.evaluate_js("window.change_focused_emoji(0)")
         self.window.evaluate_js("window.on_hide()")
         self.update_ui()
@@ -103,21 +104,6 @@ class FastEmoji:
 
             if key == Key.space:
                 self.hide_window()
-
-        if isinstance(key, keyboard.KeyCode):
-            char = key.char
-
-            if char is None or char == ":":
-                return
-
-            self.raw_search_query += char
-
-            if not self.is_showed or self.window is None:
-                return
-
-            self.search_query += char
-
-        self.update_ui()
 
     def on_release(self, key: (keyboard.Key | keyboard.KeyCode | None)):
         pass
@@ -164,6 +150,7 @@ class FastEmoji:
         vk_code: int = data.vkCode
         is_key_down = msg == 256
         is_key_up = msg == 257
+        is_char = vk_code >= 65 and vk_code <= 90
 
         if is_key_down:
             self.keys_pressed.add(vk_code)
@@ -193,6 +180,8 @@ class FastEmoji:
         if is_some_key_in(self.keys_pressed, True, *SHIFT_KEYS) and is_some_key_in(
             self.keys_pressed, True, "VK_OEM_PERIOD"
         ):
+            self.must_record = True
+            self.raw_search_query = ":"
             self.show_no_focus()
 
         if self.window is None or not self.is_showed:
@@ -211,8 +200,12 @@ class FastEmoji:
             self.print_emoji()
             self.listener.suppress_event()  # type: ignore
 
-        # esc or tab
-        if vk_is(vk_code, "VK_ESCAPE") or vk_is(vk_code, "VK_TAB"):
+        # esc or tab or space
+        if (
+            vk_is(vk_code, "VK_ESCAPE")
+            or vk_is(vk_code, "VK_TAB")
+            or vk_is(vk_code, "VK_SPACE")
+        ):
             self.hide_window()
             self.listener.suppress_event()  # type: ignore
 
@@ -230,6 +223,13 @@ class FastEmoji:
 
             if len(self.raw_search_query) == 0:
                 self.hide_window()
+
+        if is_char and is_key_down and self.must_record:
+            char = chr(data.vkCode).lower()
+            self.raw_search_query += char
+            self.search_query += char
+
+        self.update_ui()
 
     def reload_view(self):
         if self.window is None:
