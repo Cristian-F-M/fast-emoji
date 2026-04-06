@@ -228,8 +228,7 @@ class FastEmoji:
             char = chr(data.vkCode).lower()
             self.raw_search_query += char
             self.search_query += char
-
-        self.update_ui()
+            self.update_ui()
 
     def reload_view(self):
         if self.window is None:
