@@ -16,9 +16,19 @@ class API:
     def log(self, *args: Any):
         print(*args)
 
-    def get_emojis(self, offset: int, limit: int):
+    def get_emojis(self, offset: int, limit: int, query: str):
         entries = list(emoji.EMOJI_DATA.items())
-        return entries[offset : offset + limit]
+        end = offset + limit
+        if end > len(entries):
+            end = len(entries)
+        if not query:
+            return entries[offset:end]
+        filtered = [
+            e
+            for e in entries
+            if "alias" in e[1] and (query in e[1]["alias"] or query in e[1]["en"])
+        ]
+        return filtered
 
     def print_emoji(self, emoji: str):
         if not emoji:
