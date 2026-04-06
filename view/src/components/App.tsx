@@ -16,9 +16,13 @@ function App() {
 
 	const emojis = useMemo(() => {
 		if (debouncedQuery) {
-			return emojisEntries.filter(([_, tags]) =>
+			const filteredEntries = emojisEntries.filter(([_, tags]) =>
 				tags.some((tag) => tag.includes(debouncedQuery))
 			)
+
+			const emoji = filteredEntries[0]?.[0]
+			if (emoji) window.pywebview.api.set_focused_emoji(emoji)
+			return filteredEntries
 		}
 		const l = Math.min(limit, emojisEntries.length)
 		alreadyLoad.current = false
@@ -118,6 +122,8 @@ function App() {
 
 	window.changeFocusedEmoji = (index: number) => {
 		setFocusedEmoji(index)
+		const emoji = emojis[index]?.[0]
+		if (emoji) window.pywebview.api.set_focused_emoji(emoji)
 	}
 
 	window.move_focused_emoji = (direction) => {
