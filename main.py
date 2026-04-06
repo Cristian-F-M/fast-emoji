@@ -7,10 +7,9 @@ from webview import Window
 import win32gui
 import win32.lib.win32con as win32con
 from typing import Any
-from src.constants.main import CTRL_KEYS, SHIFT_KEYS
 from src.api.Api import API
 from src.data import string_from_vk
-from src.utils.main import is_some_key_in, vk_is
+from src.utils.main import is_key_pressed, is_some_key_in, vk_is
 
 
 Key = keyboard.Key
@@ -160,8 +159,8 @@ class FastEmoji:
         # ctrl + shift + q
         if (
             is_some_key_in(self.keys_pressed, True, "Q")
-            and is_some_key_in(self.keys_pressed, True, *CTRL_KEYS)
-            and is_some_key_in(self.keys_pressed, True, *SHIFT_KEYS)
+            and is_key_pressed("VK_CONTROL")
+            and is_key_pressed("VK_SHIFT")
         ):
             self.quit_program()
             self.listener.suppress_event()  # type: ignore
@@ -169,15 +168,15 @@ class FastEmoji:
         # ctrl + shift + r
         if (
             is_some_key_in(self.keys_pressed, True, "R")
-            and is_some_key_in(self.keys_pressed, True, *CTRL_KEYS)
-            and is_some_key_in(self.keys_pressed, True, *SHIFT_KEYS)
+            and is_key_pressed("VK_CONTROL")
+            and is_key_pressed("VK_SHIFT")
         ):
             if self.is_showed:
                 self.reload_view()
                 self.listener.suppress_event()  # type: ignore
 
         # shift + . -> :
-        if is_some_key_in(self.keys_pressed, True, *SHIFT_KEYS) and is_some_key_in(
+        if is_key_pressed("VK_SHIFT") and is_some_key_in(
             self.keys_pressed, True, "VK_OEM_PERIOD"
         ):
             self.must_record = True
@@ -209,15 +208,13 @@ class FastEmoji:
             self.hide_window()
             self.listener.suppress_event()  # type: ignore
 
-        if is_some_key_in(self.keys_pressed, True, *CTRL_KEYS) and vk_is(
-            vk_code, "VK_BACK"
-        ):
+        if is_key_pressed("VK_SHIFT") and vk_is(vk_code, "VK_BACK"):
             self.search_query = ""
             self.raw_search_query = ":"
             self.update_ui()
 
         if (
-            not is_some_key_in(self.keys_pressed, True, *CTRL_KEYS)
+            not is_key_pressed("VK_CONTROL")
             and vk_is(vk_code, "VK_BACK")
             and is_key_down
         ):
