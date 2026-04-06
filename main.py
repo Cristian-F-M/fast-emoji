@@ -226,6 +226,13 @@ class FastEmoji:
             self.hide_window()
             self.listener.suppress_event()  # type: ignore
 
+        if is_some_key_in(self.keys_pressed, True, *CTRL_KEYS) and vk_is(
+            vk_code, "VK_BACK"
+        ):
+            self.search_query = ''
+            self.raw_search_query = ':'
+            self.update_ui()
+
     def reload_view(self):
         if self.window is None:
             return
