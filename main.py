@@ -160,7 +160,7 @@ class FastEmoji:
         self.window = window
 
     def start_webview(self):
-        webview.start()
+        webview.start(self.on_window_start)
 
     def update_ui(self):
         if not self.window:
@@ -243,6 +243,9 @@ class FastEmoji:
             for _ in range(query_lenght):
                 kb_controller.tap(Key.backspace)
             kb_controller.type(focused_emoji)
+
+    def on_window_start(self):
+        pass
 
 
 if __name__ == "__main__":
