@@ -39,7 +39,7 @@ class FastEmoji:
         self.keys_pressed: set[int] = set()
         self.text_selected = 1
 
-        self.title = "---"
+        self.title = "Fast Emoji"
         self.width = 360
         self.height = 400
         self.x = self.screen_w - self.width - 10
