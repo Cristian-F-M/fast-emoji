@@ -209,10 +209,15 @@ class FastEmoji:
             self.hide_window()
 
         # shift + backspace
-        if is_key_pressed("VK_CONTROL") and vk_is(vk_code, "VK_BACK"):
+        if is_key_pressed("VK_CONTROL") and vk_is(vk_code, "VK_BACK") and is_key_up:
             self.search_query = ""
-            self.raw_search_query = ":"
             self.update_ui()
+
+            if self.raw_search_query == ":":
+                self.raw_search_query = ""
+                self.hide_window()
+            else:
+                self.raw_search_query = ":"
 
         # not ctrl - backspace
         if (
