@@ -101,16 +101,6 @@ class FastEmoji:
             if not self.is_showed:
                 return
 
-            if key == Key.backspace:
-                if len(self.search_query) > 0:
-                    self.search_query = self.search_query[:-1]
-
-                if len(self.raw_search_query) > 0:
-                    self.raw_search_query = self.raw_search_query[:-1]
-
-                    if len(self.raw_search_query) == 0:
-                        self.hide_window()
-
             if key == Key.space:
                 self.hide_window()
 
@@ -229,9 +219,17 @@ class FastEmoji:
         if is_some_key_in(self.keys_pressed, True, *CTRL_KEYS) and vk_is(
             vk_code, "VK_BACK"
         ):
-            self.search_query = ''
-            self.raw_search_query = ':'
+            self.search_query = ""
+            self.raw_search_query = ":"
             self.update_ui()
+
+        if vk_is(vk_code, "VK_BACK") and is_key_down:
+            self.search_query = self.search_query[:-1]
+            self.raw_search_query = self.raw_search_query[:-1]
+            self.update_ui()
+
+            if len(self.raw_search_query) == 0:
+                self.hide_window()
 
     def reload_view(self):
         if self.window is None:
