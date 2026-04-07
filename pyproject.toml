@@ -1,0 +1,17 @@
+[project]
+name = "fast-emoji"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+	"customtkinter>=5.2.2",
+	"darkdetect>=0.8.0",
+	"emoji>=2.15.0",
+	"keyboard>=0.13.5",
+	"pynput>=1.8.1",
+	"pywebview>=6.1",
+	"pywin32>=311",
+	"pywinstyles>=1.8",
+	"screeninfo>=0.8.1",
+]
