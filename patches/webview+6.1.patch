@@ -1,0 +1,36 @@
+diff --git a/webview/platforms/winforms.py b/webview/platforms/winforms.py
+index 4b7508d..856e692 100644
+--- a/webview/platforms/winforms.py
++++ b/webview/platforms/winforms.py
+@@ -728,17 +728,25 @@ def create_window(window):
+         BrowserView.instances[window.uid] = browser
+         window.events.before_show.set()
+ 
+-        if window.hidden:
++        if window.hidden and not window.transparent:
+             browser.Opacity = 0
+             browser.Show()
+             browser.Hide()
+             browser.Opacity = 1
+         elif window.transparent and is_chromium:
+-            # hack to make transparent window work
+-            # window is started hidden and shown on Navigating event.
+-            # no idea why this works
+-            browser.Show()
+-            browser.Hide()
++            def on_shown():
++                _user32 = ctypes.windll.user32
++                _hwnd = window.native.Handle.ToInt32()
++                
++                _style = _user32.GetWindowLongW(_hwnd,-20)
++                _user32.SetWindowLongW(_hwnd,-20,_style | 0x80000)
++        
++                _user32.SetLayeredWindowAttributes(_hwnd,0,180,0x2)
++                
++                if window.hidden:
++                    _user32.ShowWindow(_hwnd, 0)
++        
++            window.events.shown  += on_shown
+         else:
+             browser.Show()
+ 
