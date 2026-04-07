@@ -1,3 +1,4 @@
+import sys
 from src.data import vk_from_string
 
 KEYS_TO_SUPPRES = {
@@ -8,3 +9,5 @@ KEYS_TO_SUPPRES = {
 
 CTRL_KEYS = {"VK_LCONTROL", "VK_RCONTROL", "VK_CONTROL"}
 SHIFT_KEYS = {"VK_LSHIFT", "VK_RSHIFT", "VK_SHIFT"}
+
+IS_PACKAGED = getattr(sys, "frozen", False)
