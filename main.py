@@ -50,7 +50,7 @@ class FastEmoji:
             on_release=self.on_release,
             win32_event_filter=self.win32_event_filter,
         )
-        self.listener.start()
+        threading.Thread(target=self.listener.start, daemon=True).start()
         self.init_window()
         self.start_webview()
 
