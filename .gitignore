@@ -8,3 +8,6 @@ wheels/
 
 # Virtual environments
 .venv
+
+Fast Emoji.spec
+version_file.txt
