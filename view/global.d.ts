@@ -1,3 +1,5 @@
+import type { Configs } from '@/types/config'
+
 declare global {
 	interface Window {
 		pywebview: {
@@ -7,6 +9,7 @@ declare global {
 				print_emoji(emoji: string): Promise<void>
 				handle_input(value: string): Promise<void>
 				set_focused_emoji(emoji: string): Promise<void>
+				get_configs: () => Promise<Configs>
 			}
 			state: {}
 		}
@@ -17,5 +20,3 @@ declare global {
 		on_hide: () => void
 	}
 }
-
-export {}
