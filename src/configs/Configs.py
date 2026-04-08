@@ -16,7 +16,7 @@ class Configs:
                 self.configs.read_dict(DEFAULT_CONFIGS)
                 self.save_configs()
             else:
-                self.configs.read_file(CONFIGS_PATH.as_posix())
+                self.configs.read(CONFIGS_PATH)
 
             return
 
