@@ -20,6 +20,7 @@ function App() {
 	const [limit, setLimit] = useState(100)
 	const alreadyLoad = useRef(false)
 	const loadingMoreMessageRef = useRef(null)
+	const iconsListContainerRef = useRef<HTMLElement>(null)
 	const emojisEntries = useMemo(() => Object.entries(EMOJIS), [])
 	const { configs, setConfigs } = useConfig()
 
@@ -29,6 +30,10 @@ function App() {
 				tags.some((tag) => tag.includes(debouncedQuery))
 			)
 
+			iconsListContainerRef.current?.scrollTo({
+				top: 0,
+				behavior: 'smooth'
+			})
 			const emoji = filteredEntries[0]?.[0]
 			if (emoji) window.pywebview.api.set_focused_emoji(emoji)
 			return filteredEntries
@@ -151,10 +156,6 @@ function App() {
 		let newFocusedEmoji = focusedEmoji
 		const cantItemsPerRow = getCantItemsPerRow()
 
-		const $iconsListContainer = document.querySelector(
-			'#icons-list-container'
-		) as HTMLElement | null
-
 		if (direction === 'UP') newFocusedEmoji -= cantItemsPerRow
 		if (direction === 'DOWN') newFocusedEmoji += cantItemsPerRow
 		if (direction === 'LEFT') newFocusedEmoji -= 1
@@ -171,9 +172,7 @@ function App() {
 
 		const y = Math.floor(newFocusedEmoji / itemsPerRow) * height
 
-		if (!$iconsListContainer) return
-
-		$iconsListContainer.scrollTo({
+		iconsListContainerRef.current?.scrollTo({
 			top: y,
 			behavior: 'smooth'
 		})
@@ -185,12 +184,8 @@ function App() {
 	}
 
 	window.on_hide = () => {
-		const $iconsListContainer = document.querySelector(
-			'#icons-list-container'
-		) as HTMLElement | null
-
 		setQuery('')
-		$iconsListContainer?.scrollTo({
+		iconsListContainerRef.current?.scrollTo({
 			top: 0
 		})
 		setLimit(100)
@@ -213,6 +208,7 @@ function App() {
 				</div>
 			</header>
 			<main
+				ref={iconsListContainerRef}
 				id="icons-list-container"
 				className="h-full p-1 overflow-y-auto overflow-x-hidden mt-4 custom-scroll pr-2"
 			>
