@@ -11,6 +11,7 @@ import {
 import { twMerge } from 'tailwind-merge'
 import useDebounce from '@/hooks/useDebounce'
 import useConfig from '@/states/config'
+import NoPyWebView from './NoPyWebView'
 
 function App() {
 	const [thereIsPywebview, setThereIsPywebview] = useState(false)
@@ -49,7 +50,7 @@ function App() {
 	const onPywebviewReady = useCallback(() => {
 		setThereIsPywebview(true)
 		window.pywebview.api.log('pywebview is ready')
-	}, [])
+	}, []) 
 
 	const handleEmojiClick = useCallback((emoji: string) => {
 		window.pywebview.api.print_emoji(emoji)
@@ -191,7 +192,7 @@ function App() {
 		setLimit(100)
 	}
 
-	if (!thereIsPywebview) return <div>No hay pywebview</div>
+	if (!thereIsPywebview) return <NoPyWebView />
 
 	return (
 		<section className="bg-background p-4 h-screen pb-20 backdrop-blur-2xl">
