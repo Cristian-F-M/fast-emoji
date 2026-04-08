@@ -11,7 +11,13 @@ class Configs:
 
     def init_configs_file(self):
         if CONFIGS_PATH.exists():
-            self.configs.read_file(CONFIGS_PATH.as_posix())
+            c = CONFIGS_PATH.read_text("utf-8")
+            if c.strip() == "":
+                self.configs.read_dict(DEFAULT_CONFIGS)
+                self.save_configs()
+            else:
+                self.configs.read_file(CONFIGS_PATH.as_posix())
+
             return
 
         CONFIGS_PATH.touch()
