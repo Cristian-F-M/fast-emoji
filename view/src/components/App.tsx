@@ -1,8 +1,16 @@
 import { IconSearch } from '@tabler/icons-react'
 import EMOJIS from 'emojilib'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState
+} from 'react'
 import { twMerge } from 'tailwind-merge'
 import useDebounce from '@/hooks/useDebounce'
+import useConfig from '@/states/config'
 
 function App() {
 	const [thereIsPywebview, setThereIsPywebview] = useState(false)
@@ -13,6 +21,7 @@ function App() {
 	const alreadyLoad = useRef(false)
 	const loadingMoreMessageRef = useRef(null)
 	const emojisEntries = useMemo(() => Object.entries(EMOJIS), [])
+	const { configs, setConfigs } = useConfig()
 
 	const emojis = useMemo(() => {
 		if (debouncedQuery) {
@@ -109,6 +118,18 @@ function App() {
 
 		return () => observer.disconnect()
 	}, [thereIsPywebview])
+
+	useLayoutEffect(() => {
+		async function loadConfigs() {
+			const configs = await window.pywebview.api.get_configs()
+			setConfigs(configs)
+		}
+		loadConfigs()
+	}, [setConfigs])
+
+	useEffect(() => {
+		document.documentElement.setAttribute('data-theme', configs.theme)
+	}, [configs])
 
 	window.setQuery = (query, concat) => {
 		if (concat) return setQuery((prev) => prev + query)
