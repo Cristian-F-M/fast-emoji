@@ -42,7 +42,7 @@ class FastEmoji:
         self.x = self.screen_w - self.width - 10
         self.y = self.screen_h - self.height - 20
         self.window: Window | None
-        self.url = "http://localhost:5173"
+        self.url = "http://localhost:5173" if not IS_PACKAGED else "./index.html"
 
         threading.Thread(target=self.init_keyboard_hotkeys, daemon=True).start()
         self.listener = keyboard.Listener(
