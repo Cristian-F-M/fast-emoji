@@ -3,15 +3,18 @@ from typing import TYPE_CHECKING, Any
 import emoji
 from pynput import keyboard
 
+
 controller = keyboard.Controller()
 
 if TYPE_CHECKING:
+    from src.configs.Configs import Configs
     from main import FastEmoji
 
 
 class API:
-    def __init__(self, fast_emoji: FastEmoji):
+    def __init__(self, fast_emoji: FastEmoji, configs: Configs):
         self._fast_emoji = fast_emoji
+        self._configs = configs
 
     def log(self, *args: Any):
         print(*args)
@@ -46,3 +49,6 @@ class API:
             self._fast_emoji.focused_emoji = None
             return
         self._fast_emoji.focused_emoji = emoji
+
+    def get_configs(self):
+        return self._configs.get_configs()
