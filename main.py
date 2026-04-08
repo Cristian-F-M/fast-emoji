@@ -8,6 +8,7 @@ import win32gui
 import win32.lib.win32con as win32con
 from typing import Any
 from src.api.Api import API
+from src.constants.main import IS_PACKAGED
 from src.data import string_from_vk
 from src.utils.main import is_key_pressed, is_some_key_in, vk_is
 
