@@ -178,12 +178,12 @@ function App() {
 	if (!thereIsPywebview) return <div>No hay pywebview</div>
 
 	return (
-		<section className="bg-background p-4 h-screen pb-20">
+		<section className="bg-background p-4 h-screen pb-20 backdrop-blur-2xl">
 			<header className="w-full sticky top-2 bg-surface/70 backdrop-blur-2xl p-2">
 				<input
 					type="text"
 					value={query}
-					className="w-full h-8 border border-border rounded-md px-4 text-text-secondary bg-surface outline-none focus-visible:ring ring-primary placeholder:text-text-muted placeholder:text-sm pl-6"
+					className="w-full h-8 border border-border rounded-md px-4 text-text-secondary bg-surface outline-none focus-visible:ring ring-primary placeholder:text-text-muted placeholder:text-sm pl-6 backdrop-blur-2xl"
 					placeholder="Search"
 					readOnly
 				/>
