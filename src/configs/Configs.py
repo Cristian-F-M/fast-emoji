@@ -25,6 +25,7 @@ class Configs:
         if len(sections) >= 1:
             return
         self.configs.read_dict(DEFAULT_CONFIGS)
+        self.save_configs()
 
     def init_configs_folder(self):
         if not CONFIGS_DIR_PATH.exists():
@@ -35,5 +36,8 @@ class Configs:
 
     def set_configs(self, section: str, option: str, value: Any):
         self.configs.set(section, option, value)
+        self.save_configs()
+
+    def save_configs(self):
         with open(CONFIGS_PATH, "w") as config_file:
             self.configs.write(config_file)
