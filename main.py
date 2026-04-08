@@ -8,6 +8,7 @@ import win32gui
 import win32.lib.win32con as win32con
 from typing import Any
 from src.api.Api import API
+from src.configs.Configs import Configs
 from src.constants.main import IS_PACKAGED
 from src.data import string_from_vk
 from src.utils.main import is_key_pressed, is_some_key_in, vk_is
@@ -33,7 +34,8 @@ class FastEmoji:
         self.search_query: str = ""
         self.listener: keyboard.Listener
         self.raw_search_query: str = ""
-        self.api: API = API(self)
+        self.configs = Configs()
+        self.api: API = API(self, self.configs)
         self.keys_pressed: set[int] = set()
         self.must_record = False
 
