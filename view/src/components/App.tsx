@@ -214,7 +214,7 @@ function App() {
 			</header>
 			<main
 				id="icons-list-container"
-				className="h-full p-1 overflow-y-auto overflow-x-hidden mt-4"
+				className="h-full p-1 overflow-y-auto overflow-x-hidden mt-4 custom-scroll pr-2"
 			>
 				<section
 					id="icons-list"

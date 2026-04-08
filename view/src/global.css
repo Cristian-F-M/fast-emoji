@@ -57,3 +57,25 @@ body {
 * {
 	@apply transition-all;
 }
+
+.custom-scroll::-webkit-scrollbar {
+	--sb-size: 5px;
+	width: var(--sb-size);
+	height: var(--sb-size);
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+	background: var(--color-background);
+	border-radius: 3px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+	background: var(--color-surface-soft);
+	border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+	.custom-scroll {
+		scrollbar-color: var(--color-background) var(--color-surface-soft);
+	}
+}
