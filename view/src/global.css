@@ -32,6 +32,7 @@
 	--overlay: rgb(0, 0, 0);
 
 	color: var(--text-primary);
+	background-color: var(--color-background);
 }
 
 :root[data-theme="dark"] {
@@ -58,8 +59,12 @@ body {
 	@apply transition-all;
 }
 
+.custom-scroll {
+	@apply scroll-smooth;
+}
+
 .custom-scroll::-webkit-scrollbar {
-	--sb-size: 5px;
+	--sb-size: 10px;
 	width: var(--sb-size);
 	height: var(--sb-size);
 }
@@ -78,4 +83,24 @@ body {
 	.custom-scroll {
 		scrollbar-color: var(--color-background) var(--color-surface-soft);
 	}
+}
+
+.picker-scroll::-webkit-scrollbar {
+	--sb-size: 5px;
+	width: var(--sb-size);
+	height: var(--sb-size);
+}
+
+.button-glow {
+	background: var(--color-primary);
+	cursor: pointer;
+	transition: all 0.3s ease;
+
+	box-shadow:
+		0 0px 10px var(--color-primary),
+		0 0px 20px var(--color-text-muted);
+}
+
+#root {
+	@apply h-screen w-screen;
 }
