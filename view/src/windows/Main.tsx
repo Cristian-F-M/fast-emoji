@@ -76,7 +76,7 @@ const cards: Card[] = [
 
 export function Main() {
 	return (
-		<section className="flex flex-col items-center justify-center py-10">
+		<section className="flex flex-col items-center justify-center">
 			<header className="flex flex-col items-center justify-center gap-2">
 				<Logo className="size-46" />
 				<h1 className="text-6xl uppercase font-semibold">Fast emoji</h1>

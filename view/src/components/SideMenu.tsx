@@ -37,7 +37,7 @@ export default function SideMenu() {
 					</nav>
 				</main>
 			</section>
-			<main className="size-full px-10 overflow-y-auto custom-scroll">
+			<main className="size-full px-10 overflow-y-auto custom-scroll pt-10 pb-10">
 				<Outlet />
 			</main>
 		</div>
