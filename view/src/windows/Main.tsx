@@ -4,10 +4,11 @@ import {
 	IconKeyboard,
 	IconSearch
 } from '@tabler/icons-react'
-import React from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Link, type LinkProps } from 'react-router'
 import { twMerge } from 'tailwind-merge'
 import Logo from '@/icons/logo'
+import useConfig from '../states/config'
 
 interface GetStartedLinks {
 	id: string
@@ -75,6 +76,24 @@ const cards: Card[] = [
 ]
 
 export function Main() {
+	const [isPywebviewReady, setIsPywebviewReady] = useState(false)
+	const { load } = useConfig()
+
+	useLayoutEffect(() => {
+		if (!isPywebviewReady) return
+		load()
+	}, [load, isPywebviewReady])
+
+	useEffect(() => {
+		function onPywebviewReady() {
+			setIsPywebviewReady(true)
+			window.pywebview.api.log('pywebview ready')
+		}
+
+		window.addEventListener('pywebviewready', onPywebviewReady)
+		return () => window.removeEventListener('pywebviewready', onPywebviewReady)
+	}, [])
+
 	return (
 		<section className="flex flex-col items-center justify-center">
 			<header className="flex flex-col items-center justify-center gap-2">
