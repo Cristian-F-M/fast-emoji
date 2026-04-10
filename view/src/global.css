@@ -16,7 +16,7 @@
 	--color-overlay: var(--overlay);
 }
 
-:root {
+[data-theme="light"] {
 	--background: rgb(242, 246, 252);
 	--surface: rgb(255, 255, 255);
 	--surface-soft: rgb(225, 232, 240);
@@ -30,12 +30,9 @@
 	--warning: rgb(202, 138, 4);
 	--danger: rgb(185, 28, 28);
 	--overlay: rgb(0, 0, 0);
-
-	color: var(--text-primary);
-	background-color: var(--color-background);
 }
 
-:root[data-theme="dark"] {
+[data-theme="dark"] {
 	--background: rgb(10, 12, 28);
 	--surface: rgb(22, 26, 40);
 	--surface-soft: rgb(30, 36, 56);
@@ -52,7 +49,7 @@
 }
 
 body {
-	@apply overflow-hidden;
+	@apply overflow-hidden 	text-text-primary bg-background;
 }
 
 * {
