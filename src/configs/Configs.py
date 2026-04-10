@@ -34,6 +34,19 @@ class Configs:
     def get_configs(self):
         return self.configs
 
+    def get_configs_dict(self):
+        configs: dict[str, Any] = {}
+        _configs = self.configs
+        sections = _configs.sections()
+
+        for section in sections:
+            for item in _configs[section]:
+                if section not in configs:
+                    configs[section] = {}
+                configs[section][item] = _configs[section][item]
+
+        return configs
+
     def set_configs(self, section: str, option: str, value: Any):
         self.configs.set(section, option, value)
         self.save_configs()
