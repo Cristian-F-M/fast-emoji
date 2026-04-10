@@ -12,12 +12,23 @@ interface ConfigState {
 
 const useConfig = create<ConfigState>()((set, get) => ({
 	configs: {
-		theme: 'dark'
+		theme: 'dark',
+		launchAtStartup: true,
+		runInBackground: true
 	},
 	setConfigs: (configs) => set({ configs }),
 	changeConfigs: ({ key, value }) => {
 		const configs = get().configs
-		configs[key] = value
+
+		if (!(key in configs)) return
+
+		if (typeof value !== typeof configs[key]) return
+
+		;(configs[key] as unknown) = value
+
+		if (key === 'theme')
+			document.documentElement.setAttribute('data-theme', String(value))
+
 		return set({ configs })
 	}
 }))
