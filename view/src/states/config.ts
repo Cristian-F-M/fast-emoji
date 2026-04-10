@@ -8,6 +8,7 @@ interface ConfigState {
 		key: keyof Configs
 		value: Configs[keyof Configs]
 	}) => void
+	load: () => void
 }
 
 const useConfig = create<ConfigState>()((set, get) => ({
@@ -30,6 +31,10 @@ const useConfig = create<ConfigState>()((set, get) => ({
 			document.documentElement.setAttribute('data-theme', String(value))
 
 		return set({ configs })
+	},
+	load: async () => {
+		const configs = await window.pywebview.api.get_configs()
+		set({ configs })
 	}
 }))
 
