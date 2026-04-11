@@ -8,11 +8,11 @@ controller = keyboard.Controller()
 
 if TYPE_CHECKING:
     from src.configs.Configs import Configs
-    from main import FastEmoji
+    from windows.EmojiPicker import EmojiPicker
 
 
 class API:
-    def __init__(self, fast_emoji: FastEmoji, configs: Configs):
+    def __init__(self, fast_emoji: EmojiPicker, configs: Configs):
         self._fast_emoji = fast_emoji
         self._configs = configs
 
@@ -51,4 +51,13 @@ class API:
         self._fast_emoji.focused_emoji = emoji
 
     def get_configs(self):
-        return self._configs.get_configs()
+        configs: dict[str, Any] = {}
+        _configs = self._configs.get_configs_dict()
+
+        for section in _configs:
+            for item in _configs[section]:
+                value = _configs[section][item]
+
+                configs[item] = value
+
+        return configs
