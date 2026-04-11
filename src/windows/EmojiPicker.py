@@ -158,7 +158,6 @@ class EmojiPicker:
         is_key_down = msg == 256
         is_key_up = msg == 257
         is_char = vk_code >= 65 and vk_code <= 90
-        print(vk_code)
 
         if is_key_down:
             self.keys_pressed.add(vk_code)
@@ -192,8 +191,6 @@ class EmojiPicker:
             self.raw_search_query = ":"
             self.show_no_focus()
 
-        print('self.must_record', self.must_record)
-        print('self.is_showed', self.is_showed)
         if self.window is None or not self.is_showed:
             return
 
@@ -243,7 +240,6 @@ class EmojiPicker:
             if len(self.raw_search_query) == 0:
                 self.hide_window()
 
-        print('self.must_record', self.must_record)
         # any char [A-Z]
         if is_char and is_key_down and self.must_record:
             char = chr(data.vkCode).lower()
