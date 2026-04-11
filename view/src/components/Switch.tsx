@@ -21,7 +21,7 @@ export function Switch({
 					id={id}
 					name={name}
 					type="checkbox"
-					checked={value}
+					defaultChecked={value}
 					onChange={(e) => onValueChange(e.target.checked)}
 					className="sr-only peer"
 					{...props}
