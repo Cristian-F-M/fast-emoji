@@ -1,3 +1,4 @@
+import { resolve } from 'node:path'
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
@@ -8,5 +9,21 @@ export default defineConfig({
 	resolve: {
 		tsconfigPaths: true
 	},
-	plugins: [react(), babel({ presets: [reactCompilerPreset()] }), tailwindcss()]
+	plugins: [
+		react(),
+		babel({ presets: [reactCompilerPreset()] }),
+		tailwindcss()
+	],
+	build: {
+		rolldownOptions: {
+			input: {
+				main: resolve(__dirname, 'index.html'),
+				picker: resolve(__dirname, 'picker.html')
+			}
+		}
+	},
+
+	dev: {
+		sourcemap: true
+	}
 })
