@@ -22,12 +22,17 @@ package_json = get_package_json()
 
 # Build view
 def build_view():
-
+    view_path = Path("./view")
     try:
         node_package_manager = get_node_package_manager()
-        result = subprocess.run([node_package_manager, "run", "build"])
-        print("Salida:\n", result.stdout)
-        print("Errores:\n", result.stderr)
+        result = subprocess.run(
+            [node_package_manager, "run", "build"], cwd=view_path.absolute()
+        )
+
+        if result.stdout:
+            print("Salida:\n", result.stdout)
+        if result.stderr:
+            print("Errores:\n", result.stderr)
     except subprocess.CalledProcessError as e:
         print("Error building app view", e)
         sys.exit(1)
@@ -58,8 +63,10 @@ def build_exe():
     # Build apk
     try:
         result = subprocess.run(cmd, check=True, capture_output=False, text=False)
-        print("Salida:\n", result.stdout)
-        print("Errores:\n", result.stderr)
+        if result.stdout:
+            print("Salida:\n", result.stdout)
+        if result.stderr:
+            print("Errores:\n", result.stderr)
     except subprocess.CalledProcessError as e:
         print("Error al ejecutar el comando:")
         print(e.stderr)
