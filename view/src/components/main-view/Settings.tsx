@@ -4,17 +4,38 @@ import {
 	IconPalette,
 	IconRocket
 } from '@tabler/icons-react'
+import { useCallback } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { SettingRow } from '@/components/settings/SettingRow'
 import { SwitchRow } from '@/components/settings/SwitchRow'
 import useConfig from '@/src/states/config'
+import type { Window } from '@/src/types/main-window'
 import { InputRadio } from '../InputRadio'
 
 export default function Settings() {
 	const { configs, changeConfigs } = useConfig()
+	const Window = window as unknown as Window
 
 	const generalCardClassName =
 		'p-4 bg-surface-soft rounded-2xl w-full max-w-100 has-[&_button:hover]:bg-primary/20  [&_header]:flex [&_header]:flex-row [&_header]:items-center [&_header]:gap-2 [&_header]:[&_svg]:size-4.5 [&_header]:[&_svg]:text-primary [&_main]:mt-4 [&_main_button]:w-full [&_main_button]:bg-surface [&_main_button]:px-4 [&_main_button]:py-2 [&_main_button]:text-xl [&_main_button]:font-semibold [&_main_button]:text-text-muted [&_main_button]:rounded-lg [&_main_button]:cursor-pointer [&_main_button]:hover:bg-primary/10 [&_footer]:mt-4 [&_footer]:text-center [&_footer]:text-sm [&_footer]:text-xs [&_footer]:uppercase [&_footer]:text-text-muted'
+
+	const handleChangeConfig = useCallback(
+		(section: string, option: string, value: unknown) => {
+			Window.pywebview.api.change_config(section, option, value)
+		},
+		[]
+	)
+
+	const handleChangeTheme = useCallback(
+		(t: string) => {
+			handleChangeConfig('app', 'theme', t)
+			changeConfigs({
+				key: 'theme',
+				value: t as (typeof configs)[keyof typeof configs]
+			})
+		},
+		[changeConfigs, handleChangeConfig]
+	)
 
 	return (
 		<section>
@@ -48,13 +69,14 @@ export default function Settings() {
 						icon={() => <IconRocket />}
 						id="lauch-at-startup"
 						name="lauch-at-startup"
-						onValueChange={() =>
+						onValueChange={(value) => {
+							handleChangeConfig('app', 'launch_at_startup', value)
 							changeConfigs({
-								key: 'launchAtStartup',
-								value: !configs.launchAtStartup
+								key: 'launch_at_startup',
+								value
 							})
-						}
-						value={configs.launchAtStartup}
+						}}
+						value={configs.launch_at_startup}
 					/>
 					<SwitchRow
 						title="Run in background"
@@ -62,13 +84,14 @@ export default function Settings() {
 						icon={() => <IconEyeOff />}
 						id="run-in-backgroun"
 						name="run-in-backgroun"
-						onValueChange={() =>
+						onValueChange={(value) => {
+							handleChangeConfig('app', 'run_in_background', value)
 							changeConfigs({
-								key: 'runInBackground',
-								value: !configs.runInBackground
+								key: 'run_in_background',
+								value
 							})
-						}
-						value={configs.runInBackground}
+						}}
+						value={configs.run_in_background}
 					/>
 				</SettingRow>
 
@@ -116,24 +139,14 @@ export default function Settings() {
 										<button
 											type="button"
 											className="mt-3 w-full bg-(--background) px-4 py-2 rounded-lg flex flex-row items-center justify-between cursor-pointer text-(--text-primary)"
-											onClick={() =>
-												changeConfigs({
-													key: 'theme',
-													value: t as (typeof configs)[keyof typeof configs]
-												})
-											}
+											onClick={() => handleChangeTheme(t)}
 										>
 											{t}
 											<div>
 												<InputRadio
 													id={`radio-for-theme-${t}`}
 													name="theme"
-													onValueChange={() =>
-														changeConfigs({
-															key: 'theme',
-															value: t as (typeof configs)[keyof typeof configs]
-														})
-													}
+													onValueChange={() => handleChangeTheme(t)}
 													value={t}
 													currentValue={configs.theme}
 												/>
