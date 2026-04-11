@@ -12,6 +12,7 @@ import { twMerge } from 'tailwind-merge'
 import NoPyWebView from '@/components/NoPyWebView'
 import useDebounce from '@/hooks/useDebounce'
 import useConfig from '@/states/config'
+import type { Window } from '@/types/emoji-picker'
 
 export function EmojiPicker() {
 	const [isPywebviewReady, setIsPywebviewReady] = useState(false)
@@ -24,6 +25,7 @@ export function EmojiPicker() {
 	const iconsListContainerRef = useRef<HTMLElement>(null)
 	const emojisEntries = useMemo(() => Object.entries(EMOJIS), [])
 	const { configs, load } = useConfig()
+	const Window = window as unknown as Window
 
 	const emojis = useMemo(() => {
 		if (debouncedQuery) {
@@ -36,7 +38,7 @@ export function EmojiPicker() {
 				behavior: 'smooth'
 			})
 			const emoji = filteredEntries[0]?.[0]
-			if (emoji) window.pywebview.api.set_focused_emoji(emoji)
+			if (emoji) Window.pywebview.api.set_focused_emoji(emoji)
 			return filteredEntries
 		}
 		const l = Math.min(limit, emojisEntries.length)
@@ -49,11 +51,11 @@ export function EmojiPicker() {
 
 	const onPywebviewReady = useCallback(() => {
 		setIsPywebviewReady(true)
-		window.pywebview.api.log('pywebview is ready')
+		Window.pywebview.api.log('pywebview is ready in picker')
 	}, [])
 
 	const handleEmojiClick = useCallback((emoji: string) => {
-		window.pywebview.api.print_emoji(emoji)
+		Window.pywebview.api.print_emoji(emoji)
 	}, [])
 
 	const getItemSize = useCallback(() => {
@@ -97,8 +99,8 @@ export function EmojiPicker() {
 	}, [getItemSize])
 
 	useEffect(() => {
-		window.addEventListener('pywebviewready', onPywebviewReady)
-		return () => window.removeEventListener('pywebviewready', onPywebviewReady)
+		Window.addEventListener('pywebviewready', onPywebviewReady)
+		return () => Window.removeEventListener('pywebviewready', onPywebviewReady)
 	}, [onPywebviewReady])
 
 	useEffect(() => {
@@ -134,23 +136,23 @@ export function EmojiPicker() {
 		document.documentElement.setAttribute('data-theme', configs.theme)
 	}, [configs])
 
-	window.setQuery = (query, concat) => {
+	Window.setQuery = (query, concat) => {
 		if (concat) return setQuery((prev) => prev + query)
 		setQuery(query)
 
 		const emoji = emojis?.[0]?.[0]
 
-		if (emoji) window.pywebview.api.set_focused_emoji(emoji)
+		if (emoji) Window.pywebview.api.set_focused_emoji(emoji)
 		setFocusedEmoji(0)
 	}
 
-	window.changeFocusedEmoji = (index: number) => {
+	Window.changeFocusedEmoji = (index: number) => {
 		setFocusedEmoji(index)
 		const emoji = emojis[index]?.[0]
-		if (emoji) window.pywebview.api.set_focused_emoji(emoji)
+		if (emoji) Window.pywebview.api.set_focused_emoji(emoji)
 	}
 
-	window.move_focused_emoji = (direction) => {
+	Window.move_focused_emoji = (direction) => {
 		let newFocusedEmoji = focusedEmoji
 		const cantItemsPerRow = getCantItemsPerRow()
 
@@ -162,7 +164,7 @@ export function EmojiPicker() {
 		if (newFocusedEmoji < minIndex || newFocusedEmoji > maxIndex) return
 		const emoji = emojis[newFocusedEmoji]?.[0]
 
-		if (emoji) window.pywebview.api.set_focused_emoji(emoji)
+		if (emoji) Window.pywebview.api.set_focused_emoji(emoji)
 		setFocusedEmoji(newFocusedEmoji)
 
 		const itemsPerRow = getCantItemsPerRow()
@@ -176,12 +178,12 @@ export function EmojiPicker() {
 		})
 	}
 
-	window.change_focused_emoji = (index: number) => {
+	Window.change_focused_emoji = (index: number) => {
 		if (index < minIndex || index > maxIndex) return
 		setFocusedEmoji(index)
 	}
 
-	window.on_hide = () => {
+	Window.on_hide = () => {
 		setQuery('')
 		iconsListContainerRef.current?.scrollTo({
 			top: 0
