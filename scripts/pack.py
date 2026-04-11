@@ -47,7 +47,7 @@ def build_exe():
         ".\\view\\dist\\:.",
         "--windowed",
         "--icon",
-        ".\\src\\assets\\cm.ico",
+        ".\\src\\assets\\fast-emoji.ico",
         "--version-file",
         version_file_path.as_posix(),
         "--clean",
