@@ -36,6 +36,7 @@ class API:
 
     def change_config(self, section: str, option: str, value: Any):
         self._configs.set_configs(section, option, str(value))
+        self._emoji_picker.api.update_configs()
 
     def open_picker(self):
         self._emoji_picker.show_no_focus()
