@@ -8,6 +8,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Link, type LinkProps } from 'react-router'
 import { twMerge } from 'tailwind-merge'
 import Logo from '@/icons/logo'
+import type { Window } from '@/types/main-window'
 import useConfig from '../states/config'
 
 interface GetStartedLinks {
@@ -78,6 +79,7 @@ const cards: Card[] = [
 export function Main() {
 	const [isPywebviewReady, setIsPywebviewReady] = useState(false)
 	const { load } = useConfig()
+	const Window = window as unknown as Window
 
 	useLayoutEffect(() => {
 		if (!isPywebviewReady) return
@@ -87,11 +89,11 @@ export function Main() {
 	useEffect(() => {
 		function onPywebviewReady() {
 			setIsPywebviewReady(true)
-			window.pywebview.api.log('pywebview ready')
+			Window.pywebview.api.log('pywebview ready')
 		}
 
-		window.addEventListener('pywebviewready', onPywebviewReady)
-		return () => window.removeEventListener('pywebviewready', onPywebviewReady)
+		Window.addEventListener('pywebviewready', onPywebviewReady)
+		return () => Window.removeEventListener('pywebviewready', onPywebviewReady)
 	}, [])
 
 	return (
