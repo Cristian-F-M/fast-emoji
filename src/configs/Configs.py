@@ -35,16 +35,26 @@ class Configs:
         return self.configs
 
     def get_configs_dict(self):
-        configs: dict[str, Any] = {}
         _configs = self.configs
         sections = _configs.sections()
+        configs: dict[str, Any] = {}
 
         for section in sections:
-            for item in _configs[section]:
-                if section not in configs:
-                    configs[section] = {}
-                configs[section][item] = _configs[section][item]
-
+            configs[section] = {}
+            for key, value in _configs.items(section):
+                if value.lower() in [
+                    "true",
+                    "false",
+                    "yes",
+                    "no",
+                    "on",
+                    "off",
+                    "1",
+                    "0",
+                ]:
+                    configs[section][key] = _configs.getboolean(section, key)
+                else:
+                    configs[section][key] = value
         return configs
 
     def set_configs(self, section: str, option: str, value: Any):
