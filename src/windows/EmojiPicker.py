@@ -23,7 +23,7 @@ kb_controller = keyboard.Controller()
 
 
 class EmojiPicker:
-    def __init__(self):
+    def __init__(self, configs: Configs):
 
         [monitor] = get_monitors()
 
@@ -34,7 +34,7 @@ class EmojiPicker:
         self.search_query: str = ""
         self.listener: keyboard.Listener
         self.raw_search_query: str = ""
-        self.configs = Configs()
+        self.configs = configs
         self.api: API = API(self, self.configs)
         self.keys_pressed: set[int] = set()
         self.must_record = False

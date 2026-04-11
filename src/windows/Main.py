@@ -8,7 +8,7 @@ from src.windows.EmojiPicker import EmojiPicker
 
 
 class MainView:
-    def __init__(self, emoji_picker: EmojiPicker) -> None:
+    def __init__(self, emoji_picker: EmojiPicker, configs: Configs) -> None:
         [monitor] = get_monitors()
 
         self.screen_w = monitor.width
@@ -19,7 +19,7 @@ class MainView:
         self.window: Window | None
         self.title = "Fast Emoji"
         self.url = "http://localhost:5173/"
-        self.configs = Configs()
+        self.configs = configs
         self.api = API(self, self.configs, self.emoji_picker)
         self.min_w = self.screen_w - 100
         self.min_h = self.screen_h - 100
