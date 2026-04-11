@@ -5,7 +5,7 @@ import {
 	IconSearch,
 	IconX
 } from '@tabler/icons-react'
-import React, { useCallback } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { Link } from 'react-router'
 import { twMerge } from 'tailwind-merge'
 import type { Window } from '@/src/types/main-window'
@@ -59,9 +59,11 @@ const steps: Step[] = [
 
 export default function HowToUse() {
 	const Window = window as unknown as Window
+	const demoInputRef = useRef<HTMLInputElement>(null)
 
 	const handleOpenPicker = useCallback(() => {
 		Window.pywebview.api.open_picker()
+		demoInputRef.current?.focus()
 	}, [])
 
 	return (
@@ -136,6 +138,15 @@ export default function HowToUse() {
 								The panel floats seamlessly over any application you are using.
 								It's lightweight, non-intrusive, and blazird fast.
 							</p>
+
+							<div className="w-10/12 mt-4 overflow-hidden h-0 has-[input:focus]:h-auto [interpolate-size:allow-keywords]">
+								<input
+									ref={demoInputRef}
+									className="w-full h-10 outline-none border border-border bg-surface rounded-3xl px-3"
+									type="text"
+									placeholder="Type 'fire'"
+								/>
+							</div>
 
 							<div className="mt-4 flex flex-row gap-4">
 								<button
