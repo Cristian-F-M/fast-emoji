@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 import emoji
 from pynput import keyboard
+import json
 
 
 controller = keyboard.Controller()
@@ -61,3 +62,10 @@ class API:
                 configs[item] = value
 
         return configs
+
+    def update_configs(self):
+        window = self._fast_emoji.window
+        configs = self.get_configs()
+        if window is None:
+            return
+        window.evaluate_js(f"window.update_configs({json.dumps(configs)})")
