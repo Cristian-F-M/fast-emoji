@@ -12,6 +12,7 @@ import { twMerge } from 'tailwind-merge'
 import NoPyWebView from '@/components/NoPyWebView'
 import useDebounce from '@/hooks/useDebounce'
 import useConfig from '@/states/config'
+import type { Configs } from '@/types/config'
 import type { Window } from '@/types/emoji-picker'
 
 export function EmojiPicker() {
@@ -24,7 +25,7 @@ export function EmojiPicker() {
 	const loadingMoreMessageRef = useRef(null)
 	const iconsListContainerRef = useRef<HTMLElement>(null)
 	const emojisEntries = useMemo(() => Object.entries(EMOJIS), [])
-	const { configs, load } = useConfig()
+	const { configs, load, setConfigs } = useConfig()
 	const Window = window as unknown as Window
 
 	const emojis = useMemo(() => {
@@ -189,6 +190,10 @@ export function EmojiPicker() {
 			top: 0
 		})
 		setLimit(100)
+	}
+
+	Window.update_configs = (configs: Configs) => {
+		setConfigs(configs)
 	}
 
 	if (!isPywebviewReady) return <NoPyWebView />

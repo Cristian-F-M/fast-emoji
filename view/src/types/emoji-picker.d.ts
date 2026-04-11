@@ -17,4 +17,5 @@ export interface Window extends globalThis.Window {
 	move_focused_emoji: (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => void
 	change_focused_emoji: (index: number) => void
 	on_hide: () => void
+	update_configs: (configs: Configs) => void
 }
