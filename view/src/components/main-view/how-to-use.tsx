@@ -5,9 +5,10 @@ import {
 	IconSearch,
 	IconX
 } from '@tabler/icons-react'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Link } from 'react-router'
 import { twMerge } from 'tailwind-merge'
+import type { Window } from '@/src/types/main-window'
 
 interface Step {
 	id: string
@@ -57,6 +58,12 @@ const steps: Step[] = [
 ]
 
 export default function HowToUse() {
+	const Window = window as unknown as Window
+
+	const handleOpenPicker = useCallback(() => {
+		Window.pywebview.api.open_picker()
+	}, [])
+
 	return (
 		<section className="">
 			<header className="flex flex-col items-center justify-center gap-2">
@@ -134,6 +141,7 @@ export default function HowToUse() {
 								<button
 									className="bg-linear-120 from-primary to-primary-pressed px-5 py-1.5 rounded-xl flex flex-row gap-2 items-center cursor-pointer hover:scale-105"
 									type="button"
+									onClick={handleOpenPicker}
 								>
 									<span className="block p-1 bg-surface rounded-full">
 										<IconPlayerPlayFilled className="text-text-primary size-2" />
