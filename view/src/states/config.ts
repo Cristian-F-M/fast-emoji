@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { Configs } from '@/types/config'
+import type { Window } from '@/types/main-window'
 
 interface ConfigState {
 	configs: Configs
@@ -14,8 +15,8 @@ interface ConfigState {
 const useConfig = create<ConfigState>()((set, get) => ({
 	configs: {
 		theme: 'dark',
-		launchAtStartup: true,
-		runInBackground: true
+		launch_at_startup: true,
+		run_in_background: true
 	},
 	setConfigs: (configs) => set({ configs }),
 	changeConfigs: ({ key, value }) => {
@@ -33,7 +34,11 @@ const useConfig = create<ConfigState>()((set, get) => ({
 		return set({ configs })
 	},
 	load: async () => {
-		const configs = await window.pywebview.api.get_configs()
+		const configs = await (
+			window as unknown as Window
+		).pywebview.api.get_configs()
+		document.documentElement.setAttribute('data-theme', String(configs.theme))
+
 		set({ configs })
 	}
 }))

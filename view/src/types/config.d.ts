@@ -1,5 +1,5 @@
 export interface Configs {
 	theme: 'dark' | 'light',
-	launchAtStartup: boolean
-	runInBackground: boolean
+	launch_at_startup: boolean
+	run_in_background: boolean
 }
