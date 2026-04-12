@@ -2,6 +2,7 @@ import sys
 from screeninfo import get_monitors
 from webview import Window
 import webview
+from src.constants.main import IS_PACKAGED
 from src.api.Main import API
 from src.configs.Configs import Configs
 from src.windows.EmojiPicker import EmojiPicker
@@ -18,7 +19,7 @@ class MainView:
 
         self.window: Window | None
         self.title = "Fast Emoji"
-        self.url = "http://localhost:5173/"
+        self.url = "http://localhost:5173/" if not IS_PACKAGED else "./index.html"
         self.configs = configs
         self.api = API(self, self.configs, self.emoji_picker)
         self.min_w = self.screen_w - 100
