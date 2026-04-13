@@ -1,6 +1,8 @@
 from typing import Any
+from src.constants.main import HOST, PORT
 from src.data import vk_from_string, string_from_vk
 import win32api
+import socket
 
 
 def is_some_key_in(
@@ -35,3 +37,13 @@ def is_key_pressed(code: int | str):
         return False
 
     return win32api.GetKeyState(vk_code) < 0
+
+
+def check_if_running():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.connect((HOST, PORT))
+        s.close()
+        return True
+    except Exception:
+        return False

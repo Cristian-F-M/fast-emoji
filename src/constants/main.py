@@ -11,3 +11,7 @@ CTRL_KEYS = {"VK_LCONTROL", "VK_RCONTROL", "VK_CONTROL"}
 SHIFT_KEYS = {"VK_LSHIFT", "VK_RSHIFT", "VK_SHIFT"}
 
 IS_PACKAGED = getattr(sys, "frozen", False)
+
+
+HOST = "127.0.0.1"
+PORT = 5000

@@ -9,9 +9,10 @@ import win32.lib.win32con as win32con
 from typing import Any
 from src.api.Api import API
 from src.configs.Configs import Configs
-from src.constants.main import IS_PACKAGED
+from src.constants.main import HOST, IS_PACKAGED, PORT
 from src.data import string_from_vk
-from src.utils.main import is_key_pressed, is_some_key_in, vk_is
+from src.utils.main import check_if_running, is_key_pressed, is_some_key_in, vk_is
+import socket
 
 
 Key = keyboard.Key
@@ -38,6 +39,8 @@ class FastEmoji:
         self.api: API = API(self, self.configs)
         self.keys_pressed: set[int] = set()
         self.must_record = False
+        self.host = HOST
+        self.port = PORT
 
         self.title = "Fast Emoji"
         self.width = 360
@@ -54,6 +57,7 @@ class FastEmoji:
             win32_event_filter=self.win32_event_filter,
         )
         threading.Thread(target=self.listener.start, daemon=True).start()
+        threading.Thread(target=self.init_socket, daemon=True).start()
         self.init_window()
         self.start_webview()
 
@@ -263,6 +267,26 @@ class FastEmoji:
     def on_window_start(self):
         pass
 
+    def init_socket(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind((self.host, self.port))
+
+        s.listen()
+
+        while True:
+            conn, _ = s.accept()
+            conn.close()
+            self.show_no_focus()
+
 
 if __name__ == "__main__":
+    if check_if_running():
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((HOST, PORT))
+            s.close()
+        except Exception:
+            pass
+        sys.exit(0)
+
     FastEmoji()
