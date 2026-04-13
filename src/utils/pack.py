@@ -11,7 +11,9 @@ def get_node_package_manager():
         return "pnpm"
     elif os.path.exists(os.path.join(view_path, "yarn.lock")):
         return "yarn"
-    elif os.path.exists(os.path.join(view_path, "bun.lockb")):
+    elif os.path.exists(os.path.join(view_path, "bun.lock")) or os.path.exists(
+        os.path.join(view_path, "bun.lockb")
+    ):
         return "bun"
     elif os.path.exists(os.path.join(view_path, "package-lock.json")):
         return "npm"

@@ -22,10 +22,12 @@ package_json = get_package_json()
 
 # Build view
 def build_view():
-
+    view_path = Path("./view")
     try:
         node_package_manager = get_node_package_manager()
-        result = subprocess.run([node_package_manager, "run", "build"])
+        result = subprocess.run(
+            [node_package_manager, "run", "build"], cwd=view_path.absolute()
+        )
         print("Salida:\n", result.stdout)
         print("Errores:\n", result.stderr)
     except subprocess.CalledProcessError as e:
