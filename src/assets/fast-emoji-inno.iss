@@ -3,7 +3,7 @@
 ; Non-commercial use only
 
 #define MyAppName "Fast Emoji"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "cmorales"
 #define MyAppURL "https://github.com/Cristian-F-M/fast-emoji/#readme"
 #define MyAppExeName "Fast Emoji.exe"
