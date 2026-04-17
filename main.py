@@ -141,7 +141,7 @@ class FastEmoji:
             resizable=False,
             hidden=True,
             focus=False,
-            easy_drag=False,
+            easy_drag=True,
             zoomable=False,
         )
 
