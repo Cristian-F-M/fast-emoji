@@ -13,6 +13,7 @@ from src.constants.main import HOST, IS_PACKAGED, PORT
 from src.data import string_from_vk
 from src.utils.main import check_if_running, is_key_pressed, is_some_key_in, vk_is
 import socket
+import ctypes
 
 
 Key = keyboard.Key
@@ -30,6 +31,12 @@ class FastEmoji:
 
         self.screen_w = monitor.width
         self.screen_h = monitor.height
+        self.padding: tuple[float, float] = (10, 20)
+        self.width = 360
+        self.height = 400
+
+        self.adjust_to_window_scale()
+
         self.focused_emoji: None | str = None
         self.is_showed: bool = False
         self.search_query: str = ""
@@ -43,12 +50,13 @@ class FastEmoji:
         self.port = PORT
 
         self.title = "Fast Emoji"
-        self.width = 360
-        self.height = 400
-        self.x = self.screen_w - self.width - 10
-        self.y = self.screen_h - self.height - 20
+        self.x = self.screen_w - self.width - self.padding[0]
+        self.y = self.screen_h - self.height - self.padding[1]
         self.window: Window | None
         self.url = "http://localhost:5173" if not IS_PACKAGED else "./index.html"
+
+        print(self.padding[0], self.screen_w - self.width, self.x)
+        print(self.padding[1], self.screen_h - self.height, self.y)
 
         threading.Thread(target=self.init_keyboard_hotkeys, daemon=True).start()
         self.listener = keyboard.Listener(
@@ -277,6 +285,33 @@ class FastEmoji:
             conn, _ = s.accept()
             conn.close()
             self.show_no_focus()
+
+    def get_screen_scale(self):
+        user32 = ctypes.windll.user32
+        gdi32 = ctypes.windll.gdi32
+
+        user32.SetProcessDPIAware()
+        hdc: int = user32.GetDC(0)
+        dpi: int = gdi32.GetDeviceCaps(hdc, 88)
+        user32.ReleaseDC(0, hdc)
+        scale = dpi / 96
+
+        return scale
+
+    def adjust_to_window_scale(self):
+        scale = self.get_screen_scale()
+        reduce_factor = 2 - scale
+
+        if scale == 1:
+            return
+
+        screen_w = round(self.screen_w * reduce_factor)
+        screen_h = round(self.screen_h * reduce_factor)
+        padding = (self.padding[0] * reduce_factor, self.padding[1] * reduce_factor)
+
+        self.screen_w = screen_w
+        self.screen_h = screen_h
+        self.padding = padding
 
 
 if __name__ == "__main__":
